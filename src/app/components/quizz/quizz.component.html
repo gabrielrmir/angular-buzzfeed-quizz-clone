@@ -5,20 +5,24 @@
     <h3>{{title}}</h3>
   </div>
 
-  <div *ngIf=!finished class="quizz_questions">
-      <h3>{{questionSelected.question}}</h3>
-  </div>
+  <div class="quizz" *ngFor="let question of questions; let j = index">
+    <div *ngIf="j<=questionIndex" class="quizz_questions">
+        <h3>{{question.question}}</h3>
+    </div>
 
-  <div *ngIf=!finished class="quizz_options">
+    <div *ngIf="j<=questionIndex" class="quizz_options">
 
-    <button
-      *ngFor="let option of questionSelected.options; let i = index"
-      (click)="playerChoose(option.alias)"
-      class="btn-option"
-    >
-      {{option.name}}
-    </button>
+      <button
+        *ngFor="let option of question.options; let i = index"
+        (click)="playerChoose(option)"
+        class="btn-option"
+        [disabled]="j!==questionIndex"
+        [ngClass]="{'option-selected': j!==questionIndex && answers[j].id === option.id}"
+      >
+        {{option.name}}
+      </button>
 
+    </div>
   </div>
 
   <div *ngIf=finished class="quizz_results">

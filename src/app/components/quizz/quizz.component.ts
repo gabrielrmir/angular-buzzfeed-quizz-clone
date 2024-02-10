@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import quizz_questions from "../../../assets/data/quizz_questions.json"
 
+interface QuizzOption {
+  id:number,
+  name:string,
+  alias:string
+}
+
 @Component({
   selector: 'app-quizz',
   templateUrl: './quizz.component.html',
@@ -14,7 +20,7 @@ export class QuizzComponent implements OnInit {
   questions:any
   questionSelected:any
 
-  answers:string[] = []
+  answers:QuizzOption[] = []
   answerSelected:string =""
 
   questionIndex:number =0
@@ -41,8 +47,8 @@ export class QuizzComponent implements OnInit {
 
   }
 
-  playerChoose(value:string){
-    this.answers.push(value)
+  playerChoose(option: QuizzOption){
+    this.answers.push(option)
     this.nextStep()
 
   }
@@ -59,9 +65,9 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  async checkResult(anwsers:string[]){
+  async checkResult(anwsers:QuizzOption[]){
 
-    const result = anwsers.reduce((previous, current, i, arr)=>{
+    const result = anwsers.map(answer => answer.alias).reduce((previous, current, i, arr)=>{
         if(
           arr.filter(item => item === previous).length >
           arr.filter(item => item === current).length
